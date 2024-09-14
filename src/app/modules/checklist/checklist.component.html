@@ -1,0 +1,454 @@
+<main id="main">
+  <div class="content-grid">
+    <section>
+      <div>
+        <!-- Intro -->
+        <mat-card class="center margin-block-start">
+          <mat-card-content>
+            <p>
+              Work your way through the following sections to find out which LLM
+              suits your needs. Click
+              <mat-icon color="primary" class="inline">info</mat-icon>
+              buttons for details. Your work will automatically be saved in your
+              browser, so that you can return to it later.
+            </p>
+            <p>
+              <button
+                mat-flat-button
+                aria-label="Go"
+                (click)="firstPanel.open()"
+              >
+                Go<mat-icon>play_arrow</mat-icon>
+              </button>
+            </p>
+          </mat-card-content>
+        </mat-card>
+        <!-- Section 1 -->
+        <mat-expansion-panel
+          [expanded]="store.activeExpansionPanel() === 0"
+          (opened)="setStep(0)"
+          #firstPanel
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>looks_one</mat-icon>
+              Define goals and environment
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="grid">
+            <mat-form-field>
+              <mat-label>Use case</mat-label>
+              <input
+                matInput
+                [ngModel]="store.useCase()"
+                (ngModelChange)="onUseCaseInput($event)"
+              />
+              <button
+                matSuffix
+                mat-icon-button
+                aria-label="Info"
+                color="primary"
+                (click)="
+                  openDialog({
+                    type: 'information',
+                    content:
+                      'Decribe how you plan to use the LLM, e.g., for scribe purposes.'
+                  })
+                "
+              >
+                <mat-icon>info</mat-icon>
+              </button>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> Patient population </mat-label>
+              <input
+                matInput
+                [ngModel]="store.targetPopulation()"
+                (ngModelChange)="onTargetPopulationInput($event)"
+              />
+              <button
+                matSuffix
+                mat-icon-button
+                aria-label="Info"
+                color="primary"
+                (click)="
+                  openDialog({
+                    type: 'information',
+                    content:
+                      'Clearly define your target population for clinical tasks, e.g., older adults with oteoarthritis.'
+                  })
+                "
+              >
+                <mat-icon>info</mat-icon>
+              </button>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label> End-user group(s) </mat-label>
+              <input
+                matInput
+                [ngModel]="store.user()"
+                (ngModelChange)="onUserInput($event)"
+              />
+              <button
+                matSuffix
+                mat-icon-button
+                aria-label="Info"
+                color="primary"
+                (click)="
+                  openDialog({
+                    type: 'information',
+                    content:
+                      'Describe who is interacting with the LLM, e.g. therpaists, administrative staff, patients.'
+                  })
+                "
+              >
+                <mat-icon>info</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <mat-action-row>
+            <button mat-raised-button (click)="nextStep()">
+              Next<mat-icon>skip_next</mat-icon>
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+        <!-- Section 2 -->
+        <mat-expansion-panel
+          [expanded]="store.activeExpansionPanel() === 1"
+          (opened)="setStep(1)"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>looks_two</mat-icon>
+              List potential LLM solutions
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          @if(store.llmList().length === 0) {
+          <div class="center margin-block-start">
+            <p>
+              List the names of all the LLMs you want to consider for your use
+              case.
+            </p>
+          </div>
+
+          }
+
+          <div class="grid">
+            @for (llm of store.llmList(); track i; let i = $index) {
+            <mat-form-field>
+              <mat-label>Name of LLM solution</mat-label>
+              <input
+                matInput
+                [ngModel]="llm.name"
+                (ngModelChange)="onLlmNameInput($event, i)"
+              />
+            </mat-form-field>
+            }
+          </div>
+          @if (store.llmList().length > 0) {
+          <button
+            mat-flat-button
+            aria-label="Remove"
+            (click)="store.removeLlm()"
+          >
+            Remove<mat-icon>remove</mat-icon></button
+          >&nbsp; } @if (store.llmList().length < store.maxLlmListLength()) {
+          <button mat-flat-button aria-label="Add" (click)="store.addLlm()">
+            Add<mat-icon>add</mat-icon>
+          </button>
+          }
+
+          <mat-action-row>
+            <button mat-raised-button (click)="prevStep()">
+              Previous<mat-icon>skip_previous</mat-icon>
+            </button>
+            <button mat-raised-button (click)="nextStep()">
+              Next<mat-icon>skip_next</mat-icon>
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+        <!-- Section 3 -->
+        <mat-expansion-panel
+          class="table"
+          [expanded]="store.activeExpansionPanel() === 2"
+          (opened)="setStep(2)"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>looks_3</mat-icon>
+              Answer criterion questions
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          @if (store.llmList().length > 0) {
+
+          <div
+            class="center margin-block-start margin-block-end padding-inline"
+          >
+            <p>
+              Answer the criteria for each LLM as best you can.
+              <mat-icon class="inline error-icon">warning</mat-icon> indicate
+              required criteria,
+              <mat-icon class="inline">info</mat-icon>
+              are recommended, but might be required by your regulatory
+              authorities. Click <mat-icon class="inline">note_alt</mat-icon> to
+              record your answer rationales.
+            </p>
+          </div>
+
+          <mat-tab-group
+            (selectedTabChange)="onSelectedTabChange($event)"
+            [selectedIndex]="store.activeLlmChecklist()"
+          >
+            @for (llm of store.llmList(); track i; let i = $index) {
+            <mat-tab [label]="llm.name ? llm.name : 'LLM ' + (i + 1)">
+            </mat-tab>
+            }
+          </mat-tab-group>
+          }
+          <!-- Criterion table - Start -->
+          @if (store.llmList().length > 0) {
+          <table
+            mat-table
+            [dataSource]="store.tableData()"
+            class="mat-elevation-z8"
+          >
+            <!-- Columns -->
+            <!-- Index col -->
+            <ng-container matColumnDef="index">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td
+                mat-cell
+                *matCellDef="let i = index"
+                class="no-inline-padding-end align-right"
+              >
+                <strong>{{ i + 1 }}</strong>
+              </td>
+            </ng-container>
+
+            <!-- Criterion col -->
+            <ng-container matColumnDef="criterion">
+              <th mat-header-cell *matHeaderCellDef>Criterion</th>
+              <td mat-cell *matCellDef="let criterion; let i = index">
+                {{ criterion.question }}@if (criterion.required) { [required] }
+              </td>
+            </ng-container>
+
+            <!-- Eval col -->
+            <ng-container matColumnDef="eval">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td
+                mat-cell
+                *matCellDef="let data; let i = index"
+                class="no-inline-padding"
+              >
+                <div class="eval-grid">
+                  <!-- Toggle -->
+                  <mat-slide-toggle
+                    aria-label="criterionMet"
+                    [ngModel]="data.criterionMet"
+                    (ngModelChange)="onToggleChange(i)"
+                  >
+                  </mat-slide-toggle>
+
+                  <!-- Criterion rationale -->
+                  <button
+                    mat-icon-button
+                    matTooltip="Criterion rationale"
+                    matTooltipShowDelay="1000"
+                    aria-label="rationale"
+                    [ngClass]="{
+                      'error-icon': !data.criterionMet && data.required
+                    }"
+                    [color]="data.criterionMet ? 'primary' : ''"
+                    (click)="
+                      openDialog({
+                        type: 'information',
+                        title: 'Criterion rationale',
+                        content: data.questionRationale
+                      })
+                    "
+                  >
+                    <mat-icon
+                      >@if (data.required ) { warning } @else { info }</mat-icon
+                    >
+                  </button>
+
+                  <!-- Answer rationale -->
+                  <button
+                    mat-icon-button
+                    matTooltip="Input and review your response rationale"
+                    matTooltipShowDelay="1000"
+                    aria-label="answer rationale"
+                    [color]="data.answerRationale ? 'primary' : ''"
+                    (click)="
+                  openRationaleDialog(
+                    {
+                      type: 'input',
+                      title: 'Answer rationale',
+                      inputLabel:'Rationale',
+                      confirmLabel: 'Save',
+                      inputValue: data.answerRationale,
+                    },
+                    i
+                  )
+                "
+                  >
+                    <mat-icon>note_alt</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Rows -->
+            <tr mat-header-row *matHeaderRowDef="criterionTableColumns"></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: criterionTableColumns"
+            ></tr>
+          </table>
+          }
+          <!-- Criterion table - End -->
+
+          <mat-action-row>
+            <button mat-raised-button (click)="prevStep()">
+              Previous<mat-icon>skip_previous</mat-icon>
+            </button>
+            <button mat-raised-button (click)="nextStep()">
+              Next<mat-icon>skip_next</mat-icon>
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+
+        <!-- Section 4 -->
+        <mat-expansion-panel
+          [expanded]="store.activeExpansionPanel() === 3"
+          (opened)="setStep(3)"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon>looks_4</mat-icon>
+              Review results
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          @if(store.useCase() || store.targetPopulation() || store.user()){
+          <mat-card appearance="outlined" class="margin-block-end">
+            <mat-card-content>
+              <div class="result-heading-grid">
+                @if(store.useCase()){
+                <div><strong>Use case</strong></div>
+                <div class="margin-block-end">{{ store.useCase() }}</div>
+                } @if(store.targetPopulation()){
+                <div><strong>Target population</strong></div>
+                <div class="margin-block-end">
+                  {{ store.targetPopulation() }}
+                </div>
+                } @if(store.user()){
+                <div><strong>User</strong></div>
+                <div class="margin-block-end">{{ store.user() }}</div>
+                }
+              </div>
+            </mat-card-content>
+          </mat-card>
+          }
+          <div class="result-grid">
+            @for (result of store.results(); track i; let i = $index) {
+            <mat-card appearance="outlined">
+              <mat-card-header class="margin-block-end">
+                <mat-card-title>{{
+                  result.name || "LLM " + (i + 1)
+                }}</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="result-line-item-grid">
+                  @if (result.totalRequiredCriteriaMet <
+                  store.criteriaCount().totalRequired) {
+                  <mat-icon matListItemIcon class="error-icon"
+                    >warning</mat-icon
+                  >
+                  } @else {
+                  <mat-icon matListItemIcon> check </mat-icon>
+                  }
+                  <div>Required criteria met:</div>
+                  <div class="align-right">
+                    {{
+                      result.totalRequiredCriteriaMet +
+                        "/" +
+                        store.criteriaCount().totalRequired
+                    }}
+                  </div>
+
+                  <mat-icon matListItemIcon>percent</mat-icon>
+                  <div>Total criteria met:</div>
+                  <div class="align-right">
+                    {{
+                      result.totalCriteriaMet +
+                        "/" +
+                        store.criteriaCount().total
+                    }}
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            }
+          </div>
+          @if(store.results().length > 0){
+          <div class="center margin-block-end">
+            <button mat-flat-button aria-label="Print" (click)="onPrint()">
+              Print results<mat-icon>print</mat-icon>
+            </button>
+          </div>
+          }
+          <mat-action-row>
+            <button mat-raised-button (click)="prevStep()">
+              Previous<mat-icon>skip_previous</mat-icon>
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </div>
+    </section>
+
+    <!-- Reset form -->
+    <section>
+      <div class="center margin-block-end">
+        <button
+          mat-button
+          aria-label="Clear form"
+          (click)="
+            openDeleteDialog({
+              type: 'confirmation',
+              title: 'Warning',
+              content: 'Are you sure you want to delete all your hard work?',
+              confirmLabel: 'Yes!',
+              cancelLabel: 'Nevermind'
+            })
+          "
+        >
+          <mat-icon>delete</mat-icon> Clear form
+        </button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="content-grid">
+    <section class="full-width dark">
+      <!-- Reference list -->
+      <app-references
+        class="margin-block-start margin-block-end faded no-overflow"
+      />
+    </section>
+    <section class="full-width dark">
+      <mat-divider />
+      <div class="center margin-block-start margin-block-end">
+        &copy; {{ year }}
+      </div>
+    </section>
+  </div>
+</footer>

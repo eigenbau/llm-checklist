@@ -1,0 +1,30 @@
+<main id="main" class="content-grid">
+  <section class="full-width full-height">
+    <div class="center">
+      <h1>Welcome to the LLM checklist for healthcare providers</h1>
+      <p>
+        This tool is intended to help you select safe, effective, and equitable
+        Large Language Models (LLM) for use in your practice.
+      </p>
+      <p>Last update: {{ store.date() | date }}</p>
+      <p>Version: {{ store.version() }}</p>
+      <button
+        mat-raised-button
+        (click)="
+          openDialog({
+            type: 'confirmation',
+            title: 'Disclaimer',
+            cancelLabel: 'Never mind',
+            confirmLabel: 'Let\'s go',
+            content:
+              'Please be aware that this is meant for healthcare providers with limited
+              resources.
+              For a selection of more comprehensive guides, please refer to the provided references.'
+          })
+        "
+      >
+        Get started!
+      </button>
+    </div>
+  </section>
+</main>

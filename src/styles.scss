@@ -1,1 +1,276 @@
+@use "@angular/material" as mat;
+
+$theme: mat.define-theme();
+
+.error-icon {
+  @include mat.icon-color($theme, $color-variant: error);
+}
+
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --color-background: white;
+  --color-text: hsl(0, 0%, 10%);
+
+  --color-contrast-light: hsl(0, 0%, 98%);
+  --color-contrast-dark: hsl(0, 0%, 10%);
+
+  --color-overlay: hsla(0, 0%, 50%, 0.5);
+
+  /* Padding */
+  --content-padding-inline: 1rem;
+}
+
+// Resets
+html,
+body {
+  height: 100%;
+  background: var(--section-color-contrast);
+  touch-action: pan-y;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1 {
+  max-width: 40ch;
+}
+
+p {
+  line-height: 1.5;
+  margin-block-start: 0;
+  max-width: 60ch;
+}
+
+a,
+a:hover,
+a:focus,
+a:visited,
+a:active {
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-decoration: underline;
+}
+
+// Main grid
+app-checklist {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr min-content;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  min-height: 100dvh;
+}
+
+header {
+  grid-area: header;
+}
+
+main {
+  grid-area: main;
+  background: linear-gradient(
+    to top,
+    var(--color-contrast-light),
+    var(--color-background) 10%
+  );
+}
+
+footer {
+  grid-area: footer;
+}
+
+// Helper classes
+.margin-block-start {
+  margin-block-start: 16px;
+}
+
+.margin-block-end {
+  margin-block-end: 16px;
+}
+
+.padding-inline {
+  padding-inline: 24px;
+}
+
+.faded {
+  opacity: 0.5;
+}
+
+body .align-right {
+  justify-self: end;
+  text-align: end;
+}
+
+body .no-inline-padding {
+  padding-inline: 0;
+}
+
+body .no-inline-padding-start {
+  padding-inline-start: 0;
+}
+
+body .no-inline-padding-end {
+  padding-inline-end: 0;
+}
+
+body .block {
+  display: block;
+}
+
+.no-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Grid
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+// Material Design styles
+body .mat-expansion-panel {
+  margin-top: 24px;
+}
+
+body .mat-expansion-panel:last-of-type {
+  margin-bottom: 24px;
+}
+
+.mat-expansion-panel-header-title .mat-icon {
+  margin-inline-end: 16px;
+}
+
+.table .mat-expansion-panel-body {
+  padding: 0;
+}
+
+.mat-mdc-form-field-icon-suffix {
+  margin-inline-end: 4px;
+}
+
+.mat-mdc-table {
+  box-shadow: none;
+}
+
+.mat-icon.inline {
+  --size: 18px;
+  width: var(--size);
+  height: var(--size);
+  font-size: var(--size);
+  position: relative;
+  top: 3px;
+}
+
+// Content grid
+.content-grid {
+  --content-max-width: 900px;
+  display: grid;
+  grid-template-columns:
+    [full-width-start]
+    minmax(var(--content-padding-inline), 1fr)
+    [content-start]
+    min(100% - (var(--content-padding-inline) * 2), var(--content-max-width))
+    [content-end]
+    minmax(var(--content-padding-inline), 1fr)
+    [full-width-end];
+}
+
+.content-grid > :not(.full-width),
+.full-width > :not(.full-width) {
+  grid-column: content;
+}
+
+.content-grid > .full-width {
+  grid-column: full-width;
+  display: grid;
+  grid-template-columns: inherit;
+}
+
+// Section
+section {
+  --section-background-color: var(--color-background);
+  --section-color-text: var(--color-text);
+  --section-color-contrast: var(--color-contrast-light);
+  color: var(--section-color-text);
+  background: var(--section-background-color);
+}
+
+section.full-width {
+  background: linear-gradient(
+    to top,
+    var(--section-color-contrast),
+    var(--section-background-color) 10%
+  );
+}
+
+section.dark {
+  --section-background-color: var(--color-text);
+  --section-color-text: var(--color-background);
+  --section-color-contrast: var(--color-contrast-dark);
+}
+
+section.full-height {
+  min-height: 100svh;
+}
+
+section .center {
+  align-self: center;
+  text-align: center;
+}
+
+section .center p,
+section .center h1 {
+  margin-inline: auto;
+}
+
+// Criterion table
+.eval-grid {
+  margin-inline-end: 8px;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  align-items: center;
+  justify-items: center;
+}
+
+@media (max-width: 400px) {
+  .eval-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+  }
+  .eval-grid > :first-child {
+    grid-row: span 2;
+  }
+}
+
+// Result section
+.result-heading-grid {
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 400px) {
+  .result-heading-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-block-end: 32px;
+}
+
+.result-line-item-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+}
