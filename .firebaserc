@@ -1,5 +1,16 @@
 {
   "projects": {
-    "default": "llm-checklist"
-  }
+    "default": "llmscreener"
+  },
+  "targets": {
+    "llmscreener": {
+      "hosting": {
+        "llm-screener": [
+          "llmscreeningtool"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

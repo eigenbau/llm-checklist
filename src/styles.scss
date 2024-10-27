@@ -14,8 +14,6 @@ $theme: mat.define-theme();
   --color-contrast-light: hsl(0, 0%, 98%);
   --color-contrast-dark: hsl(0, 0%, 10%);
 
-  --color-overlay: hsla(0, 0%, 50%, 0.5);
-
   /* Padding */
   --content-padding-inline: 1rem;
 }
@@ -92,12 +90,20 @@ footer {
   margin-block-end: 16px;
 }
 
+.margin-block-end-section {
+  margin-block-end: 32px;
+}
+
 .padding-inline {
   padding-inline: 24px;
 }
 
 .faded {
   opacity: 0.5;
+}
+
+.hidden {
+  display: none;
 }
 
 body .align-right {
@@ -231,6 +237,26 @@ section .center h1 {
 }
 
 // Criterion table
+.mat-mdc-cell.group-heading {
+  background: grey;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mat-mdc-cell.group-heading mat-icon {
+  color: white;
+}
+
+.headding-grid {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  width: fit-content;
+  margin-inline: auto;
+  column-gap: 0.25rem;
+}
+
 .eval-grid {
   margin-inline-end: 8px;
   display: grid;
@@ -247,6 +273,20 @@ section .center h1 {
   .eval-grid > :first-child {
     grid-row: span 2;
   }
+}
+
+// Dialog pop-up
+.legend-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 1rem;
+  row-gap: 0.5rem;
+}
+
+.legend-grid > * {
+  align-content: center;
+  min-height: 40px;
 }
 
 // Result section

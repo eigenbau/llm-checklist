@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  effect,
   inject,
+  TemplateRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -24,10 +24,18 @@ import {
   DialogData,
   DialogResults,
 } from '../../shared/components/dialog/dialog.component';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogRef,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReferencesComponent } from '../../shared/components/references/references.component';
 import { CommonModule } from '@angular/common';
+import { CsvService } from '../../core/utils/csv.service';
 
 @Component({
   selector: 'app-checklist',
@@ -49,6 +57,10 @@ import { CommonModule } from '@angular/common';
     MatListModule,
     MatTooltipModule,
     ReferencesComponent,
+    MatDialogActions,
+    MatDialogContent,
+    MatDialogClose,
+    MatDialogTitle,
   ],
   templateUrl: './checklist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,6 +70,8 @@ export class ChecklistComponent {
   private dialog = inject(MatDialog);
 
   readonly store = inject(ChecklistStore);
+
+  readonly csv = inject(CsvService);
 
   readonly year = new Date().getFullYear();
 
@@ -114,6 +128,28 @@ export class ChecklistComponent {
     });
   }
 
+  openChecklistIntroDialog(templateRef: TemplateRef<HTMLElement>) {
+    this.dialog
+      .open(templateRef, {
+        width: '600px',
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.store.updateChecklistIntroDialogSeen();
+      });
+  }
+
+  openResultIntroDialog(templateRef: TemplateRef<HTMLElement>) {
+    this.dialog
+      .open(templateRef, {
+        width: '600px',
+      })
+      .afterClosed()
+      .subscribe(() => {
+        this.store.updateResultIntroDialogSeen();
+      });
+  }
+
   openRationaleDialog(data: DialogData, criterionIndex: number): void {
     const dialogRef: MatDialogRef<DialogComponent, DialogResults> =
       this.dialog.open(DialogComponent, {
@@ -142,5 +178,9 @@ export class ChecklistComponent {
 
   onPrint(): void {
     window.print();
+  }
+
+  onCSVDownload(): void {
+    this.csv.downloadCSV();
   }
 }

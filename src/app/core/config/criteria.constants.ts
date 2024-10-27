@@ -4,24 +4,24 @@ import { Criterion } from '../stores/checklist.store';
 export const CRITERION_LIST: Criterion[] = [
   {
     question:
+      'Does the vendor offer proof of regulatory compliance, e.g., active Software as a Medical Device license?',
+    required: true,
+    questionRationale:
+      'Ensuring that the LLM product meets all applicable regulatory requirements, such as having an active Software as a Medical Device (SaMD) license, is essential for legal compliance and patient safety.',
+  },
+  {
+    question:
+      "Do you plan to use the the LLM within the scope that the vendor's policies specify?",
+    required: true,
+    questionRationale:
+      'Confirming that the vendor permits the LLM product to be used for the intended healthcare task is crucial for regulatory compliance. For example, ChatGPT does not allow its models to be used for healthcare purposes, highlighting the importance of adhering to provider restrictions to avoid legal and ethical issues.',
+  },
+  {
+    question:
       'Does the intended use of the LLM comply with all applicable regulations from regulatory authorities?',
     required: true,
     questionRationale:
       'Ensuring that the intended use of the LLM complies with all applicable regulations from regulatory authorities is essential for legal and ethical adherence. This compliance safeguards patient rights, prevents legal repercussions, and maintains the integrity and trustworthiness of the healthcare practice.',
-  },
-  {
-    question:
-      'Does the provider permit their LLM to be used for the intended task?',
-    required: true,
-    questionRationale:
-      'Confirming that the provider permits the LLM product to be used for the intended healthcare task is crucial for regulatory compliance. For example, ChatGPT does not allow its models to be used for healthcare purposes, highlighting the importance of adhering to provider restrictions to avoid legal and ethical issues.',
-  },
-  {
-    question:
-      'Does the LLM meet all applicable regulatory requirements, e.g., active Software as a Medical Device license?',
-    required: true,
-    questionRationale:
-      'Ensuring that the LLM product meets all applicable regulatory requirements, such as having an active Software as a Medical Device (SaMD) license, is essential for legal compliance and patient safety.',
   },
   {
     question:
@@ -37,13 +37,13 @@ export const CRITERION_LIST: Criterion[] = [
     questionRationale:
       "Having a plan to periodically monitor regulatory compliance is crucial to ensure that the LLM adheres to evolving legal and ethical standards. This proactive approach helps prevent legal issues, maintains patient trust, and ensures the system's ongoing legitimacy and safety in clinical practice.",
   },
-  {
-    question:
-      'Is the LLM suitable for the intended task, i.e. is it trained for the specific purpose?',
-    required: false,
-    questionRationale:
-      'Ensuring the LLM is task-specific reduces errors and improves accuracy, which is critical for patient safety in healthcare.',
-  },
+  // {
+  //   question:
+  //     'Is the LLM suitable for the intended task, i.e. is it trained for the specific purpose?',
+  //   required: false,
+  //   questionRationale:
+  //     'Ensuring the LLM is task-specific reduces errors and improves accuracy, which is critical for patient safety in healthcare.',
+  // },
   {
     question:
       'For clinical tasks, is the LLM valid for the target patient population?',

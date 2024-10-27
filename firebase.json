@@ -1,6 +1,7 @@
 {
   "hosting": {
-    "public": "dist/llm-checklist/browser",
+    "target": "llm-screener",
+    "public": "./dist/llm-screener/browser",
     "ignore": [
       "firebase.json",
       "**/.*",

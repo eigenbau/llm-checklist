@@ -42,11 +42,13 @@ type ChecklistState = {
   maxLlmListLength: number;
   criterionList: Criterion[];
   llmList: Llm[];
+  checklistIntroDialogSeen: boolean;
+  resultIntroDialogSeen: boolean;
 };
 
 const initialState: ChecklistState = {
-  version: '0.1.6',
-  date: '2024-09-09',
+  version: '0.1.9',
+  date: '2024-10-27',
   useCase: '',
   targetPopulation: '',
   user: '',
@@ -55,6 +57,8 @@ const initialState: ChecklistState = {
   maxLlmListLength: 3,
   criterionList: CRITERION_LIST,
   llmList: [],
+  checklistIntroDialogSeen: false,
+  resultIntroDialogSeen: false,
 };
 
 export const ChecklistStore = signalStore(
@@ -68,9 +72,12 @@ export const ChecklistStore = signalStore(
         return [];
       }
       return criterionList().map((c, i) => ({
+        index: i,
         question: c.question,
         questionRationale: c.questionRationale,
         required: c.required,
+        firstInGroup:
+          i == 0 ? true : c.required !== criterionList()[i - 1].required,
         criterionMet:
           llmList()[activeLlmChecklist()].answerList[i].criterionMet,
         answerRationale:
@@ -121,6 +128,16 @@ export const ChecklistStore = signalStore(
     // Update active expansion panel
     updateActiveExpansionPanel(index: number): void {
       patchState(store, () => ({ activeExpansionPanel: index }));
+    },
+
+    // Set checklistIntroDialogSeen to true
+    updateChecklistIntroDialogSeen(): void {
+      patchState(store, () => ({ checklistIntroDialogSeen: true }));
+    },
+
+    // Set resultIntroDialogSeen to true
+    updateResultIntroDialogSeen(): void {
+      patchState(store, () => ({ resultIntroDialogSeen: true }));
     },
 
     // Add LLM
@@ -229,9 +246,11 @@ export const ChecklistStore = signalStore(
         // Remove existing local state if it has a version mismatch
         if (localState && localState.version !== store.version()) {
           window.alert(
-            `Unfortunately the current version does not match your saved version. I had to reset the forms. You will have to start over :-(`
+            `Unfortunately the current version does not match your saved version.
+            I had to reset the forms. You will have to start over :-(`
           );
           removeLocalStorageEntry();
+          patchState(store, () => ({ ...initialState }));
         }
 
         // Patch state if local state exists and has same version
