@@ -257,6 +257,10 @@ section .center h1 {
   column-gap: 0.25rem;
 }
 
+.mat-mdc-cell.mat-column-criterion {
+  padding-block: 16px;
+}
+
 .eval-grid {
   margin-inline-end: 8px;
   display: grid;
