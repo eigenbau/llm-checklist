@@ -193,7 +193,7 @@ export class ChecklistComponent {
     const element = this.renderer.selectRootElement(`#${id}`, true);
     if (element) {
       const yPosition =
-        element.getBoundingClientRect().top + window.scrollY - 40;
+        element.getBoundingClientRect().top + window.scrollY - 16;
       this.viewportScroller.scrollToPosition([0, yPosition]);
     }
   }
