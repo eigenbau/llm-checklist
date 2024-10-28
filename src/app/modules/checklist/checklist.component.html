@@ -25,9 +25,11 @@
         </mat-card>
         <!-- Section 1 -->
         <mat-expansion-panel
+          id="section-1"
           [expanded]="store.activeExpansionPanel() === 0"
           (opened)="setStep(0)"
           #firstPanel
+          (afterExpand)="scrollTo('section-1')"
         >
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -115,22 +117,21 @@
 
         <!-- Section 2 -->
         <mat-expansion-panel
+          id="section-2"
           [expanded]="store.activeExpansionPanel() === 1"
           (opened)="setStep(1)"
+          (afterExpand)="scrollTo('section-2')"
         >
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon>looks_two</mat-icon>
-              List potential LLM solutions
+              List potential LLM
             </mat-panel-title>
           </mat-expansion-panel-header>
 
           @if(store.llmList().length === 0) {
           <div class="center margin-block-start">
-            <p>
-              List the names of all the LLMs you want to consider for your use
-              case.
-            </p>
+            <p>List the names of up to three LLMs you want to consider.</p>
           </div>
 
           }
@@ -138,7 +139,7 @@
           <div class="grid">
             @for (llm of store.llmList(); track i; let i = $index) {
             <mat-form-field>
-              <mat-label>Name of LLM solution</mat-label>
+              <mat-label>Name of LLM</mat-label>
               <input
                 matInput
                 [ngModel]="llm.name"
@@ -216,6 +217,7 @@
 
         <!-- Section 3 -->
         <mat-expansion-panel
+          id="section-3"
           class="table"
           [expanded]="store.activeExpansionPanel() === 2"
           (opened)="
@@ -224,6 +226,7 @@
               ? openChecklistIntroDialog(criterionListIntro)
               : ''
           "
+          (afterExpand)="scrollTo('section-3')"
         >
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -418,7 +421,7 @@
 
         <!-- Section 4 - Intro dialog -->
         <ng-template #resultIntro>
-          <h2 matDialogTitle>Results interpretarion</h2>
+          <h2 matDialogTitle>Results interpretation</h2>
 
           <mat-dialog-content>
             <div class="legend-grid">
@@ -444,6 +447,7 @@
 
         <!-- Section 4 -->
         <mat-expansion-panel
+          id="section-4"
           [expanded]="store.activeExpansionPanel() === 3"
           (opened)="
             setStep(3);
@@ -451,6 +455,7 @@
               ? openResultIntroDialog(resultIntro)
               : ''
           "
+          (afterExpand)="scrollTo('section-4')"
         >
           <mat-expansion-panel-header>
             <mat-panel-title>

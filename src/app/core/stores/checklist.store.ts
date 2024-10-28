@@ -246,8 +246,7 @@ export const ChecklistStore = signalStore(
         // Remove existing local state if it has a version mismatch
         if (localState && localState.version !== store.version()) {
           window.alert(
-            `Unfortunately the current version does not match your saved version.
-            I had to reset the forms. You will have to start over :-(`
+            `Unfortunately the current version of the LLM Screener does not match your saved version. I had to reset the forms. You will have to start over :-(`
           );
           removeLocalStorageEntry();
           patchState(store, () => ({ ...initialState }));

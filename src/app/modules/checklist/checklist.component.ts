@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  Renderer2,
   TemplateRef,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -34,7 +35,7 @@ import {
 } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReferencesComponent } from '../../shared/components/references/references.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { CsvService } from '../../core/utils/csv.service';
 
 @Component({
@@ -72,6 +73,10 @@ export class ChecklistComponent {
   readonly store = inject(ChecklistStore);
 
   readonly csv = inject(CsvService);
+
+  readonly viewportScroller = inject(ViewportScroller);
+
+  readonly renderer = inject(Renderer2);
 
   readonly year = new Date().getFullYear();
 
@@ -182,5 +187,14 @@ export class ChecklistComponent {
 
   onCSVDownload(): void {
     this.csv.downloadCSV();
+  }
+
+  scrollTo(id: string): void {
+    const element = this.renderer.selectRootElement(`#${id}`, true);
+    if (element) {
+      const yPosition =
+        element.getBoundingClientRect().top + window.scrollY - 40;
+      this.viewportScroller.scrollToPosition([0, yPosition]);
+    }
   }
 }
