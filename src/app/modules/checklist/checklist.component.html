@@ -34,12 +34,12 @@
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon>looks_one</mat-icon>
-              Define goals and environment
+              Define goals &amp; environment for the LLM
             </mat-panel-title>
           </mat-expansion-panel-header>
           <div class="grid">
             <mat-form-field>
-              <mat-label>Use case</mat-label>
+              <mat-label>What do you plan to use the LLM for?</mat-label>
               <input
                 matInput
                 [ngModel]="store.useCase()"
@@ -62,7 +62,7 @@
               </button>
             </mat-form-field>
             <mat-form-field>
-              <mat-label> Patient population </mat-label>
+              <mat-label>What is your patient population?</mat-label>
               <input
                 matInput
                 [ngModel]="store.targetPopulation()"
@@ -85,7 +85,7 @@
               </button>
             </mat-form-field>
             <mat-form-field>
-              <mat-label> End-user group(s) </mat-label>
+              <mat-label>Who will use the LLM?</mat-label>
               <input
                 matInput
                 [ngModel]="store.user()"
@@ -125,7 +125,7 @@
           <mat-expansion-panel-header>
             <mat-panel-title>
               <mat-icon>looks_two</mat-icon>
-              List potential LLM
+              List potential LLMs
             </mat-panel-title>
           </mat-expansion-panel-header>
 
@@ -364,7 +364,7 @@
                         type: 'information',
                         title: 'Required criteria',
                         content:
-                          'This section covers general criteria that an LLM needs to meet in order to be used in clinical praxtice.
+                          'This section covers general criteria that an LLM needs to meet in order to be used in clinical practice.
                           You might have to reach out to the LLM vendor and your regulatory body for consultation.'
                       })
                     "
