@@ -47,8 +47,8 @@ type ChecklistState = {
 };
 
 const initialState: ChecklistState = {
-  version: '0.9.1',
-  date: '2024-10-28',
+  version: '0.9.2',
+  date: '2025-02-07',
   useCase: '',
   targetPopulation: '',
   user: '',
