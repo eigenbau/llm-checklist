@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatButton } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import {
@@ -12,8 +12,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-welcome',
-  standalone: true,
-  imports: [CommonModule, RouterLink, MatButton],
+  imports: [CommonModule, MatButton],
   templateUrl: './welcome.component.html',
 })
 export class WelcomeComponent {

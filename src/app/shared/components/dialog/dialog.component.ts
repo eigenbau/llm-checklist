@@ -30,8 +30,8 @@ export type DialogResults = {
 
 // Dialog popup
 @Component({
-  selector: 'app-dialog',
-  template: `
+    selector: 'app-dialog',
+    template: `
     @if (dialog.title) {
     <h2 mat-dialog-title>{{ dialog.title }}</h2>
     }
@@ -72,18 +72,17 @@ export type DialogResults = {
       }
     </mat-dialog-actions>
   `,
-  standalone: true,
-  imports: [
-    FormsModule,
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+    imports: [
+        FormsModule,
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatDialogClose,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+    ]
 })
 export class DialogComponent {
   readonly dialogRef = inject(MatDialogRef<DialogComponent>);
