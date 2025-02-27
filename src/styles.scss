@@ -1,12 +1,27 @@
 @use "@angular/material" as mat;
+@import "./app/styles/theme-colors.scss";
 
-$theme: mat.define-theme();
-
-.error-icon {
-  @include mat.icon-color($theme, $color-variant: error);
+html {
+  @include mat.theme(
+    (
+      color: (
+        primary: $primary-palette,
+      ),
+      typography: Roboto,
+      density: 0,
+    )
+  );
 }
 
-/* You can add global styles to this file, and also import other style files */
+// Angular Material overrides via system variables: https://material.angular.io/guide/system-variables
+button.primary {
+  color: var(--mat-sys-primary);
+}
+
+mat-icon.error {
+  color: var(--mat-sys-error);
+}
+
 :root {
   --color-background: white;
   --color-text: hsl(0, 0%, 10%);
@@ -86,6 +101,9 @@ footer {
 }
 
 // Helper classes
+.primary-color {
+  color: red;
+}
 .margin-block-start {
   margin-block-start: 16px;
 }

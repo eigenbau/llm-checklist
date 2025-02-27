@@ -307,7 +307,7 @@
                     matTooltip="Criterion rationale"
                     matTooltipShowDelay="1000"
                     aria-label="rationale"
-                    color="primary"
+                    class="primary"
                     (click)="
                       openDialog({
                         type: 'information',
@@ -325,7 +325,7 @@
                     matTooltip="Input and review your response rationale"
                     matTooltipShowDelay="1000"
                     aria-label="answer rationale"
-                    [color]="data.answerRationale ? 'primary' : ''"
+                    [class]="data.answerRationale ? 'primary' : ''"
                     (click)="
                   openRationaleDialog(
                     {
@@ -425,7 +425,7 @@
 
           <mat-dialog-content>
             <div class="legend-grid">
-              <mat-icon matListItemIcon class="error-icon">warning</mat-icon>
+              <mat-icon matListItemIcon class="error">warning</mat-icon>
               <div>
                 Any LLM that does not meet all 'Required criteria' should not be
                 used.
@@ -508,9 +508,7 @@
                 <div class="result-line-item-grid">
                   @if (result.totalRequiredCriteriaMet <
                   store.criteriaCount().totalRequired) {
-                  <mat-icon matListItemIcon class="error-icon"
-                    >warning</mat-icon
-                  >
+                  <mat-icon matListItemIcon class="error">warning</mat-icon>
                   } @else {
                   <mat-icon matListItemIcon> check </mat-icon>
                   }
